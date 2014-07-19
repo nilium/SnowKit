@@ -1,0 +1,19 @@
+# Build results
+*.o
+*.a
+*.framework/
+
+# Xcode
+build/
+DerivedData/
+xcuserdata/
+bin/
+
+*.xcworkspace
+*.pbxuser
+*.mode?v3
+*.perspectivev3
+
+!default.pbxuser
+!default.mode?v3
+!default.perspectivev3
