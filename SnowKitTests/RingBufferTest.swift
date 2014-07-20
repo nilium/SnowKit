@@ -26,9 +26,10 @@ class SKRingBufferTest: XCTestCase {
         XCTAssertFalse(buffer.get(), "buffer.get() must return nil when empty")
 
         for i in 0 ..< 16 {
-            XCTAssertFalse(buffer.isFull, "buffer.isFull should be false")
+            XCTAssertLessThanOrEqual(buffer.count, buffer.capacity, "buffer.count <= buffer.capacity")
+            XCTAssertFalse(buffer.isFull, "buffer.isFull should be false when count < capacity")
             let success = buffer.put(i)
-            XCTAssertFalse(buffer.isEmpty, "buffer.isEmpty should be false")
+            XCTAssertFalse(buffer.isEmpty, "buffer.isEmpty should be false when count > 0")
 
             XCTAssert(
                 success,
@@ -37,6 +38,7 @@ class SKRingBufferTest: XCTestCase {
         }
 
         XCTAssertTrue(buffer.isFull, "buffer.isFull should be true")
+        XCTAssertEqual(buffer.count, buffer.capacity, "buffer.count must == buffer.capacity when buffer.isFull is true")
         XCTAssertFalse(buffer.put(16), "buffer.put(16) must fail when buffer.isFull")
     }
 
