@@ -100,6 +100,7 @@ class RingBuffer<T>: Sequence {
     func discardObjects() {
         writePointer = 0
         readPointer = 0
+        elements.removeAll(keepCapacity: true)
     }
 
 
