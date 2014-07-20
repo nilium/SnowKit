@@ -97,9 +97,21 @@ class RingBuffer<T>: Sequence {
         readPointer = 0
     }
 
+
     /// Reads an object from the RingBuffer, if there's one available. Returns
     /// nil if no object is in the buffer.
     func get() -> T? {
+        let next = peek()
+        if readPointer < writePointer {
+            ++readPointer
+        }
+        return next
+    }
+
+
+    /// Gets the next object in the RingBuffer without advancing the read
+    /// pointer.
+    func peek() -> T? {
         assert(
             readPointer <= writePointer,
             "Invalid RingBuffer state: readPointer > writePointer"
@@ -114,7 +126,6 @@ class RingBuffer<T>: Sequence {
             index < elements.count,
             "Read head has exceeded the size of the underlying array"
         )
-        ++readPointer
         return elements[index]
     }
 
