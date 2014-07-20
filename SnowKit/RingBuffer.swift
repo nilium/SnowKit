@@ -129,6 +129,23 @@ class RingBuffer<T>: Sequence {
         return elements[index]
     }
 
+    /// Gets whether or not the buffer can be rewound. If true, calls to
+    /// rewind() will succeed.
+    var canRewind: Bool {
+        return self.count < capacity && readPointer > 0
+    }
+
+    /// Rewinds the read pointer by one element. If the buffer could be rewound,
+    /// this method returns true. Otherwise, it returns false, and the read
+    /// pointer was not rewound.
+    func rewind() -> Bool {
+        if canRewind {
+            --readPointer
+            return true
+        }
+        return false
+    }
+
     var count: Int {
         return writePointer - readPointer
     }
