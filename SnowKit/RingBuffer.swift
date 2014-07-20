@@ -7,7 +7,6 @@
 import Foundation
 
 
-
 /// A basic ring buffer of objects of type T with independent read/write heads.
 class RingBuffer<T>: Sequence {
 
