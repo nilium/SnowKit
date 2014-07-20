@@ -188,6 +188,8 @@ class SKRingBufferTest: XCTestCase {
     }
 
 
+    // Several functions to test for protocol conformance by relying on generic
+    // type constraints.
     func isWriteQueue<T>(q: T) -> Bool { return false }
     func isWriteQueue<T: FixedWriteQueue>(q: T) -> Bool { return true }
     func isReadQueue<T>(q: T) -> Bool { return false }
