@@ -174,16 +174,9 @@ class RingBuffer<T>: Sequence {
 
 
     /// Returns a Generator that yields all objects available in the buffer.
-    /// Using this Generator does not advance the Buffer's read pointer and may
-    /// be used to check ahead of the read pointer by multiple items.
+    /// Using this Generator advances the RingBuffer's read pointer.
     func generate() -> GeneratorType {
-        var slice = [Element]()
-        let count = self.count
-        slice.reserveCapacity(count)
-        for var pointer = readPointer; pointer < writePointer; ++pointer {
-            slice.append(elements[pointer % capacity])
-        }
-        return GeneratorType(slice.generate())
+        return GeneratorType() { self.get() }
     }
 
 }
