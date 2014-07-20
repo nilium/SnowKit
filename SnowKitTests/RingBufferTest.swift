@@ -27,6 +27,9 @@ class SKRingBufferTest: XCTestCase {
             "Capacity is as initialized (\(testedCapacity))"
         )
 
+        XCTAssertTrue(buffer.isEmpty, "buffer.isEmpty should be true")
+        XCTAssertFalse(buffer.isFull, "buffer.isFull should be false")
+
         XCTAssertFalse(
             buffer.get(),
             "buffer.get() returns nil (is empty) on init"
@@ -116,6 +119,8 @@ class SKRingBufferTest: XCTestCase {
             buffer.count, 16,
             "buffer.count should be 16 after adding 8 elements"
         )
+
+        XCTAssertTrue(buffer.isFull, "buffer.isFull should be true")
 
         XCTAssertFalse(
             buffer.put(24),
