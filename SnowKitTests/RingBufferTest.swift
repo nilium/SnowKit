@@ -21,6 +21,25 @@ class SKRingBufferTest: XCTestCase {
     }
 
 
+    func fillTestBuffer() {
+        XCTAssertTrue(buffer.isEmpty, "buffer.isEmpty should be true")
+
+        for i in 0 ..< 16 {
+            XCTAssertFalse(buffer.isFull, "buffer.isFull should be false")
+            let success = buffer.put(i)
+            XCTAssertFalse(buffer.isEmpty, "buffer.isEmpty should be false")
+
+            XCTAssert(
+                success,
+                "buffer.put(\(i)) must succeed for the first 16 values"
+            )
+        }
+
+        XCTAssertTrue(buffer.isFull, "buffer.isFull should be true")
+        XCTAssertFalse(buffer.put(16), "buffer.put(16) must fail when buffer.isFull")
+    }
+
+
     func testRingBufferMax() {
         XCTAssertEqual(
             buffer.capacity, testedCapacity,
