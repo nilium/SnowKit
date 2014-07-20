@@ -155,4 +155,33 @@ class SKRingBufferTest: XCTestCase {
         )
     }
 
+
+    func testRewind() {
+        fillTestBuffer()
+
+        let x = <-buffer
+        let y = <-buffer
+        let z = <-buffer
+
+        XCTAssertTrue(x?, "x = <-buffer is not nil")
+        XCTAssertTrue(y?, "x = <-buffer is not nil")
+        XCTAssertTrue(z?, "x = <-buffer is not nil")
+
+        XCTAssertTrue(buffer.canRewind, "buffer.canRewind is true")
+        XCTAssertTrue(buffer.rewind(), "buffer.rewind() succeeds")
+        XCTAssert(z == buffer.peek(), "buffer.peek() returns z after rewind")
+
+        XCTAssertTrue(buffer.canRewind, "buffer.canRewind is true")
+        XCTAssertTrue(buffer.rewind(), "buffer.rewind() succeeds")
+        XCTAssert(y == buffer.peek(), "buffer.peek() returns y after rewind")
+
+        XCTAssertTrue(buffer.canRewind, "buffer.canRewind is true")
+        XCTAssertTrue(buffer.rewind(), "buffer.rewind() succeeds")
+        XCTAssert(x == buffer.peek(), "buffer.peek() returns x after rewind")
+
+        XCTAssertFalse(buffer.canRewind, "buffer.canRewind is false")
+        XCTAssertFalse(buffer.rewind(), "buffer.rewind() fails")
+        XCTAssert(x == buffer.peek(), "buffer.peek() continues to return x")
+    }
+
 }
