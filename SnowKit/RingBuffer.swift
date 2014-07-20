@@ -7,8 +7,34 @@
 import Foundation
 
 
+/// Protocol to describe a write-able queue (or queue-like) that has a fixed
+/// capacity. Must implement a put() that returns whether it succeeds. A put()
+/// should only succeed if isFull is false (otherwise items in the queue must
+/// be discarded somehow).
+protocol FixedWriteQueue {
+    typealias Element
+    func put(element: Element) -> Bool
+    var isFull: Bool { get }
+}
+
+
+/// Protocol to describe a read-able queue (or queue-like) that has a fixed
+/// capacity. Must implement a get() that returns items in the queue or nil if
+/// the isEmpty property returns true.
+protocol FixedReadQueue {
+    typealias Element
+    func get() -> Element?
+    var isEmpty: Bool { get }
+}
+
+
+/// Combined FixedWriteQueue and FixedReadQueue protocol.
+protocol FixedReadWriteQueue: FixedWriteQueue, FixedReadQueue {}
+
+
 /// A basic ring buffer of objects of type T with independent read/write heads.
-class RingBuffer<T>: Sequence {
+/// Conforms to FixedReadWriteQueue.
+class RingBuffer<T>: Sequence, FixedReadWriteQueue {
 
     typealias Element = T
     typealias GeneratorType = GeneratorOf<Element>
