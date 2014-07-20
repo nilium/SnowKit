@@ -70,7 +70,8 @@ class RingBuffer<T>: Sequence {
         let delta = writePointer - readPointer
 
         if writePointer == Int.max {
-            readPointer %= capacity
+            // Leave room to rewind
+            readPointer = capacity + (readPointer % capacity)
             writePointer = readPointer + delta
 
             if writePointer == Int.max {
