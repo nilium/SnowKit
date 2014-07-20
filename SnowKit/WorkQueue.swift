@@ -7,19 +7,6 @@
 import Foundation
 
 
-/// Asynchronous WorkQueue scheduling operator.
-operator infix <- { associativity left }
-
-/// Synchronous WorkQueue scheduling operator.
-operator infix <+ { associativity left }
-
-/// Asynchronous with barrier WorkQueue scheduling operator.
-operator infix |<- { associativity left }
-
-/// Synchronous with barrier WorkQueue scheduling operator.
-operator infix |<+ { associativity left }
-
-
 /// Exception thrown when attempting to schedule a barrier block on a queue
 /// that does not accept barrier blocks (i.e., NSOperatonQueue).
 let QBarrierUnsupportedException = "QBarrierUnsupportedException"
@@ -242,45 +229,4 @@ enum WorkQueue {
         MainDispatch.async(block)
     }
 
-}
-
-
-/// Short-hand operator for scheduling a block for asynchronous execution on a
-/// WorkQueue.
-///
-/// Returns the queue to permit chaining.
-@infix func <- (queue: WorkQueue, block: WorkQueue.Work) -> WorkQueue {
-    queue.async(block)
-    return queue
-}
-
-
-/// Short-hand operator for scheduling a block for synchronous execution on a
-/// WorkQueue (i.e., this will not return until the block has finished).
-///
-/// Returns the queue to permit chaining.
-@infix func <+ (queue: WorkQueue, block: WorkQueue.Work) -> WorkQueue {
-    queue.sync(block)
-    return queue
-}
-
-
-/// Short-hand operator for scheduling a block for asynchronous execution with
-/// a barrier on a WorkQueue.
-///
-/// Returns the queue to permit chaining.
-@infix func |<- (queue: WorkQueue, block: WorkQueue.Work) -> WorkQueue {
-    queue.asyncWithBarrier(block)
-    return queue
-}
-
-
-/// Short-hand operator for scheduling a block for synchronous execution with a
-/// barrier on a WorkQueue (i.e., this will not return until the block has
-/// finished).
-///
-/// Returns the queue to permit chaining.
-@infix func |<+ (queue: WorkQueue, block: WorkQueue.Work) -> WorkQueue {
-    queue.syncWithBarrier(block)
-    return queue
 }
