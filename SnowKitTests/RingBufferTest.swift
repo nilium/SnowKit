@@ -43,119 +43,87 @@ class SKRingBufferTest: XCTestCase {
     }
 
 
-    func testRingBufferMax() {
-        XCTAssertEqual(
-            buffer.capacity, testedCapacity,
-            "Capacity is as initialized (\(testedCapacity))"
-        )
-
-        XCTAssertTrue(buffer.isEmpty, "buffer.isEmpty should be true")
-        XCTAssertFalse(buffer.isFull, "buffer.isFull should be false")
-
-        XCTAssertFalse(
-            buffer.get(),
-            "buffer.get() returns nil (is empty) on init"
-        )
-
-        var count = 0
-        while buffer.put(count) {
-            ++count
-        }
-
-        XCTAssertEqual(
-            buffer.capacity, count,
-            "buffer.capacity should be the same as manual count (\(count))"
-        )
-
-        XCTAssertEqual(
-            buffer.count, count,
-            "buffer.count is the same as manual count (\(count))"
-        )
-
-        let expected = [Int]((0 ..< 16).generate())
-        XCTAssertTrue(
-            equal(expected, buffer),
-            "Buffer has expected contents"
-        )
-
-        XCTAssertTrue(
-            equal(expected, buffer),
-            "Buffer contents survive a generator loop (i.e., looping over " +
-            "its contents is not taking the contents out of the buffer)"
-        )
-
-        buffer.discardObjects()
-        XCTAssertEqual(
-            buffer.count, 0,
-            "buffer.discardObjects() makes the buffer empty"
-        )
+    func testInitState() {
+        XCTAssertFalse(buffer.get(), "buffer.get() must return nil on init")
+        XCTAssertFalse(buffer.isFull, "buffer.isFull must return false on init")
+        XCTAssertTrue(buffer.isEmpty, "buffer.isEmpty must return true on init")
+        XCTAssertEqual(buffer.count, 0, "buffer.count must be 0 on init")
+        XCTAssertFalse(buffer.canRewind, "buffer.canRewind must be false on init")
+        XCTAssertFalse(buffer.rewind(), "buffer.rewind() must fail on init")
     }
 
 
-    func testRingBufferContents() {
-        // TODO: Break this test up into something more.. sane.
+    func testWriteToCapacity() {
+        fillTestBuffer()
+    }
+
+
+    func testCapacity() {
+        XCTAssertEqual(buffer.capacity, testedCapacity, "buffer.capacity should be the requested capacity")
+    }
+
+
+    func testDiscard() {
+        fillTestBuffer()
+
+        buffer.discardObjects()
+
+        XCTAssertTrue(buffer.elements.isEmpty, "buffer.elements.isEmpty must be true after buffer.discardObjects()")
+        XCTAssertTrue(buffer.isEmpty, "buffer.isEmpty must be true after buffer.discardObjects()")
+        XCTAssertFalse(buffer.isFull, "buffer.isFull must be false if buffer.isEmpty is true")
+    }
+
+
+    func testRingBufferGeneratorEnum() {
+        fillTestBuffer()
+
+        var gen = buffer.generate()
+        var i = 0
+        while let j = gen.next() {
+            XCTAssertEqual(i, j, "gen.next() from buffer should be \(i)")
+            ++i
+        }
+
+        XCTAssertTrue(buffer.isEmpty, "buffer.isEmpty should be true after completely using a generator")
+    }
+
+
+    func testRingBufferGeneratorValues() {
         fillTestBuffer()
 
         XCTAssertTrue(
-            equal(0 ..< 16, buffer),
+            equal(0 ..< buffer.count, buffer),
             "Buffer contents are as expected for first 16 elements"
         )
 
+        XCTAssertTrue(buffer.isEmpty, "buffer.isEmpty should be true after completely using a generator")
+    }
+
+
+    func testBufferPartialRead() {
+        fillTestBuffer()
+
         for expected in 0 ..< 8 {
             let yielded = buffer.get()
-            println("Got \(yielded)")
-
-            XCTAssertTrue(
-                yielded?,
-                "buffer.get() must yield a non-nil value when there are still " +
-                "\(buffer.count) elements in it"
-            )
-
-            XCTAssertEqual(
-                yielded!, expected,
-                "buffer.get() must yield the expected elements in order"
-            )
+            XCTAssertTrue(yielded?, "buffer.get() should yield a non-nil value")
+            XCTAssertEqual(expected, yielded!, "buffer.get() should yield \(expected)")
         }
 
-        for i in 16 ..< 24 {
-            XCTAssertTrue(
-                buffer.put(i),
-                "buffer.put(\(i)) must pass when the buffer is not at capacity " +
-                "(count: \(buffer.count); capacity: \(buffer.capacity))"
-            )
+        XCTAssertFalse(buffer.isEmpty, "buffer.isEmpty must not be true after only a partial read")
+    }
+
+
+    func testBufferPartialReadAndWrite() {
+        testBufferPartialRead()
+
+        XCTAssertFalse(buffer.isFull, "buffer.isFull should be true")
+
+        for var x = 16; !buffer.isFull; ++x {
+            buffer.put(x)
         }
 
-        XCTAssertEqual(
-            buffer.count, 16,
-            "buffer.count should be 16 after adding 8 elements"
-        )
-
+        XCTAssertEqual(buffer.count, buffer.capacity, "buffer.count should be buffer.capacity")
         XCTAssertTrue(buffer.isFull, "buffer.isFull should be true")
-
-        XCTAssertFalse(
-            buffer.put(24),
-            "buffer.put(24) must fail when at capacity (given capacity: 16)"
-        )
-
-        var i = 8
-        var count = 15
-        while let x = <-buffer {
-            XCTAssertEqual(
-                buffer.count, count,
-                "buffer.count should be \(count)"
-            )
-            XCTAssertEqual(
-                x, i,
-                "<-buffer result should be \(i)"
-            )
-            ++i
-            --count
-        }
-
-        XCTAssertFalse(
-            <-buffer,
-            "<-buffer should yield nil"
-        )
     }
 
 
