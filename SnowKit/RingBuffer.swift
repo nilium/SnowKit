@@ -83,11 +83,11 @@ class RingBuffer<T>: Sequence {
             return false
         }
 
-        if (elements.count < capacity) {
-            elements.append(item)
-        } else {
+        if (elements.count == capacity) {
             let index = writePointer % capacity
             elements[index] = item
+        } else {
+            elements.append(item)
         }
 
         ++writePointer
