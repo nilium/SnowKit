@@ -159,13 +159,13 @@ class SKRingBufferTest: XCTestCase {
     func testRewind() {
         fillTestBuffer()
 
-        let x = <-buffer
-        let y = <-buffer
-        let z = <-buffer
+        let x = buffer.get()
+        let y = buffer.get()
+        let z = buffer.get()
 
-        XCTAssertTrue(x?, "x = <-buffer is not nil")
-        XCTAssertTrue(y?, "y = <-buffer is not nil")
-        XCTAssertTrue(z?, "z = <-buffer is not nil")
+        XCTAssertTrue(x?, "x = buffer.get() is not nil")
+        XCTAssertTrue(y?, "y = buffer.get() is not nil")
+        XCTAssertTrue(z?, "z = buffer.get() is not nil")
 
         XCTAssertTrue(buffer.canRewind, "buffer.canRewind is true")
         XCTAssertTrue(buffer.rewind(), "buffer.rewind() succeeds")
