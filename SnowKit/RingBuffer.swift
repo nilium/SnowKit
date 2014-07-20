@@ -106,7 +106,7 @@ class RingBuffer<T>: Sequence {
 
     /// Reads an object from the RingBuffer, if there's one available. Returns
     /// nil if no object is in the buffer.
-    func get() -> T? {
+    func get() -> Element? {
         let next = peek()
         if readPointer < writePointer {
             ++readPointer
@@ -117,7 +117,7 @@ class RingBuffer<T>: Sequence {
 
     /// Gets the next object in the RingBuffer without advancing the read
     /// pointer.
-    func peek() -> T? {
+    func peek() -> Element? {
         assert(
             readPointer <= writePointer,
             "Invalid RingBuffer state: readPointer > writePointer"
