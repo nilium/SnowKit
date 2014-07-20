@@ -15,6 +15,7 @@ class RingBuffer<T>: Sequence {
     typealias GeneratorType = GeneratorOf<Element>
 
 
+    // TODO: Add access qualifiers pending their addition to Swift.
     /* public */  let capacity: Int
     /* private */ var writePointer: Int = 0
     /* private */ var readPointer: Int  = 0
