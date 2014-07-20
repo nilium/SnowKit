@@ -164,8 +164,8 @@ class SKRingBufferTest: XCTestCase {
         let z = <-buffer
 
         XCTAssertTrue(x?, "x = <-buffer is not nil")
-        XCTAssertTrue(y?, "x = <-buffer is not nil")
-        XCTAssertTrue(z?, "x = <-buffer is not nil")
+        XCTAssertTrue(y?, "y = <-buffer is not nil")
+        XCTAssertTrue(z?, "z = <-buffer is not nil")
 
         XCTAssertTrue(buffer.canRewind, "buffer.canRewind is true")
         XCTAssertTrue(buffer.rewind(), "buffer.rewind() succeeds")
