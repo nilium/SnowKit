@@ -166,6 +166,13 @@ class RingBuffer<T>: Sequence {
         return writePointer == readPointer
     }
 
+
+    /// Gets whether or not the buffer is full (i.e., put() will fail if true).
+    var isFull: Bool {
+        return count == capacity
+    }
+
+
     /// Returns a Generator that yields all objects available in the buffer.
     /// Using this Generator does not advance the Buffer's read pointer and may
     /// be used to check ahead of the read pointer by multiple items.
