@@ -9,6 +9,11 @@ DerivedData/
 xcuserdata/
 bin/
 
+.DS_Store
+.Trashes
+*.swp
+*~.nib
+
 *.xcworkspace
 *.pbxuser
 *.mode?v3
@@ -17,3 +22,4 @@ bin/
 !default.pbxuser
 !default.mode?v3
 !default.perspectivev3
+!default.xcworkspace
