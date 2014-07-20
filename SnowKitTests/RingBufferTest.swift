@@ -23,6 +23,7 @@ class SKRingBufferTest: XCTestCase {
 
     func fillTestBuffer() {
         XCTAssertTrue(buffer.isEmpty, "buffer.isEmpty should be true")
+        XCTAssertFalse(buffer.get(), "buffer.get() must return nil when empty")
 
         for i in 0 ..< 16 {
             XCTAssertFalse(buffer.isFull, "buffer.isFull should be false")
