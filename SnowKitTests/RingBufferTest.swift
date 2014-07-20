@@ -184,4 +184,25 @@ class SKRingBufferTest: XCTestCase {
         XCTAssert(x == buffer.peek(), "buffer.peek() continues to return x")
     }
 
+
+    func isWriteQueue<T>(q: T) -> Bool { return false }
+    func isWriteQueue<T: FixedWriteQueue>(q: T) -> Bool { return true }
+    func isReadQueue<T>(q: T) -> Bool { return false }
+    func isReadQueue<T: FixedReadQueue>(q: T) -> Bool { return true }
+    func isReadWriteQueue<T>(q: T) -> Bool { return false }
+    func isReadWriteQueue<T: FixedReadWriteQueue>(q: T) -> Bool { return true }
+
+
+    func testReadWriteQueueCompliance() {
+        // A few assertions to ensure the isRWQueue() functions behave as expected
+        let ary = [Int]()
+        XCTAssertFalse(isWriteQueue(ary), "An array should not be a fixed write queue")
+        XCTAssertFalse(isReadQueue(ary), "An array should not be a fixed read queue")
+        XCTAssertFalse(isReadWriteQueue(ary), "An array should not be a fixed read-write queue")
+
+        XCTAssertTrue(isWriteQueue(buffer), "Queue is a fixed write queue")
+        XCTAssertTrue(isReadQueue(buffer), "Queue is a fixed read queue")
+        XCTAssertTrue(isReadWriteQueue(buffer), "Queue is a fixed read-write queue")
+    }
+
 }
