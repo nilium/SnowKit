@@ -146,15 +146,20 @@ class RingBuffer<T>: Sequence {
         return false
     }
 
+    /// Gets the number of unread objects currently in the RingBuffer.
     var count: Int {
         return writePointer - readPointer
     }
 
+
+    /// Gets whether or not the buffer is empty (i.e., get() will fail if true).
     var isEmpty: Bool {
         return writePointer == readPointer
     }
 
     /// Returns a Generator that yields all objects available in the buffer.
+    /// Using this Generator does not advance the Buffer's read pointer and may
+    /// be used to check ahead of the read pointer by multiple items.
     func generate() -> GeneratorType {
         var slice = [Element]()
         let count = self.count
