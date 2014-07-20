@@ -213,13 +213,13 @@ operator prefix <- {}
 
 
 /// Gets a value from the RingBuffer and returns it, if there is one.
-@prefix func <- <T>(buffer: RingBuffer<T>) -> T? {
-    return buffer.get()
+@prefix func <- <Q: FixedReadQueue>(queue: Q) -> Q.Element? {
+    return queue.get()
 }
 
 
 /// Stores a value in the RingBuffer if there's space. Returns true if
 /// successful, otherwise false.
-@infix func <- <T>(buffer: RingBuffer<T>, value: T) -> Bool {
-    return buffer.put(value)
+@infix func <- <Q: FixedWriteQueue>(queue: Q, value: Q.Element) -> Bool {
+    return queue.put(value)
 }
