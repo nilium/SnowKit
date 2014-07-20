@@ -74,11 +74,10 @@ class RingBuffer<T>: Sequence {
             readPointer = capacity + (readPointer % capacity)
             writePointer = readPointer + delta
 
-            if writePointer == Int.max {
-                // Cannot grow the RingBuffer any further -- the read pointer
-                // is too far behind.
-
-            }
+            assert(
+                writePointer < Int.max,
+                "Cannot grow the RingBuffer any further or reset the access pointers."
+            )
         } else if delta == capacity {
             // Write pointer would overwrite unread objects.
             return false
