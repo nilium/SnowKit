@@ -121,9 +121,9 @@
 			isa = PBXGroup;
 			children = (
 				1CFB1881197A370A000EC612 /* OptionalsTest.swift */,
+				1CFB188F197BB825000EC612 /* RingBufferTest.swift */,
 				1CFB1883197A3724000EC612 /* ZipTest.swift */,
 				1CFB186B197A25B1000EC612 /* Supporting Files */,
-				1CFB188F197BB825000EC612 /* RingBufferTest.swift */,
 			);
 			path = SnowKitTests;
 			sourceTree = "<group>";
