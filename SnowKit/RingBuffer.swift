@@ -50,7 +50,7 @@ class RingBuffer<T>: Sequence {
     /// Capacities < 0 are an error.
     init(capacity cap: Int, initValue: Element) {
         assert(cap > 0, "Capacity may not be <= 0")
-        assert(cap < Int.max/2, "Capacity must be < Int.max/2")
+        assert(cap <= Int.max/2, "Capacity must be <= Int.max/2")
 
         capacity = cap
         elements = [Element](count: capacity, repeatedValue: initValue)
