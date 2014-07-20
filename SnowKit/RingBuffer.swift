@@ -20,10 +20,12 @@ class RingBuffer<T>: Sequence {
     /* private */ var readPointer: Int  = 0
     /* private */ var elements: [Element]
 
+
     /// Default initializer -- inits the RingBuffer with a capacity of 256.
     convenience init() {
         self.init(capacity: 1024)
     }
+
 
     /// Initializes the RingBuffer with the given capacity. Does not initialize
     /// the contents of the RingBuffer with any default value.
@@ -39,6 +41,7 @@ class RingBuffer<T>: Sequence {
         elements.reserveCapacity(capacity)
     }
 
+
     /// Initializes the RingBuffer with the given capacity and fills the buffer
     /// with initValue as a default.
     ///
@@ -51,6 +54,7 @@ class RingBuffer<T>: Sequence {
         capacity = cap
         elements = [Element](count: capacity, repeatedValue: initValue)
     }
+
 
     /// Puts an object in the RingBuffer, if there's space available. If the
     /// buffer is maxed out (i.e., the buffer's read pointer needs to be
@@ -89,6 +93,7 @@ class RingBuffer<T>: Sequence {
 
         return true
     }
+
 
     /// Discards any data currently in the RingBuffer and resets both the read
     /// and write pointers for the object.
@@ -129,11 +134,13 @@ class RingBuffer<T>: Sequence {
         return elements[index]
     }
 
+
     /// Gets whether or not the buffer can be rewound. If true, calls to
     /// rewind() will succeed.
     var canRewind: Bool {
         return self.count < capacity && readPointer > 0
     }
+
 
     /// Rewinds the read pointer by one element. If the buffer could be rewound,
     /// this method returns true. Otherwise, it returns false, and the read
@@ -145,6 +152,7 @@ class RingBuffer<T>: Sequence {
         }
         return false
     }
+
 
     /// Gets the number of unread objects currently in the RingBuffer.
     var count: Int {
