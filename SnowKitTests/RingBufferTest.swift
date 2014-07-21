@@ -21,7 +21,7 @@ class SKRingBufferTest: XCTestCase {
     }
 
 
-    func fillTestBuffer() {
+    func testFillBuffer() {
         XCTAssertTrue(buffer.isEmpty, "buffer.isEmpty should be true")
         XCTAssertFalse(buffer.get(), "buffer.get() must return nil when empty")
 
@@ -54,7 +54,7 @@ class SKRingBufferTest: XCTestCase {
 
 
     func testWriteToCapacity() {
-        fillTestBuffer()
+        testFillBuffer()
     }
 
 
@@ -64,7 +64,7 @@ class SKRingBufferTest: XCTestCase {
 
 
     func testDiscard() {
-        fillTestBuffer()
+        testFillBuffer()
 
         buffer.discardObjects()
 
@@ -75,7 +75,7 @@ class SKRingBufferTest: XCTestCase {
 
 
     func testRingBufferGeneratorEnum() {
-        fillTestBuffer()
+        testFillBuffer()
 
         var gen = buffer.generate()
         var i = 0
@@ -89,7 +89,7 @@ class SKRingBufferTest: XCTestCase {
 
 
     func testRingBufferGeneratorValues() {
-        fillTestBuffer()
+        testFillBuffer()
 
         XCTAssertTrue(
             equal(0 ..< buffer.count, buffer),
@@ -101,7 +101,7 @@ class SKRingBufferTest: XCTestCase {
 
 
     func testBufferPartialRead() {
-        fillTestBuffer()
+        testFillBuffer()
 
         for expected in 0 ..< 8 {
             let yielded = buffer.get()
@@ -128,7 +128,7 @@ class SKRingBufferTest: XCTestCase {
 
 
     func testRewind() {
-        fillTestBuffer()
+        testFillBuffer()
 
         let x = buffer.get()
         let y = buffer.get()
