@@ -182,18 +182,20 @@ class SKRingBufferTest: XCTestCase {
     func testReadWriteQueueOperators() {
         XCTAssertTrue(buffer.isEmpty, "buffer.isEmpty should be true initially")
 
-        var total = 0
-        while buffer <- total { ++total }
+        var putTotal = 0
+        while !buffer.isFull && buffer <- putTotal {
+            ++putTotal
+        }
         XCTAssertTrue(buffer.isFull, "buffer.isFull should be true after buffer<-E returns false")
-        XCTAssertFalse(buffer <- total, "buffer <- total should return false when buffer.isFull")
+        XCTAssertFalse(buffer <- putTotal, "buffer <- total should return false when buffer.isFull")
 
-        var readTotal = 0
+        var getTotal = 0
         while let read = <-buffer {
-            XCTAssertEqual(read, readTotal, "<-buffer should return the values put in its buffer, in order")
-            ++readTotal
+            XCTAssertEqual(read, getTotal, "<-buffer should return the values put in its buffer, in order")
+            ++getTotal
         }
 
-        XCTAssertEqual(total, readTotal, "The number of items added and read should be equal")
+        XCTAssertEqual(putTotal, getTotal, "The number of items added and read should be equal")
         XCTAssertTrue(buffer.isEmpty, "buffer.isEmpty should be true after reading all elements in the queue")
         XCTAssertFalse(<-buffer, "<-buffer should be nil after reading all elements in the queue")
     }
