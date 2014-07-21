@@ -23,7 +23,7 @@ class SKRingBufferTest: XCTestCase {
 
     func testFillBuffer() {
         XCTAssertTrue(buffer.isEmpty, "buffer.isEmpty should be true")
-        XCTAssertFalse(buffer.get(), "buffer.get() must return nil when empty")
+        XCTAssertNil(buffer.get(), "buffer.get() must return nil when empty")
 
         for i in 0 ..< 16 {
             XCTAssertLessThanOrEqual(buffer.count, buffer.capacity, "buffer.count <= buffer.capacity")
@@ -44,7 +44,7 @@ class SKRingBufferTest: XCTestCase {
 
 
     func testInitState() {
-        XCTAssertFalse(buffer.get(), "buffer.get() must return nil on init")
+        XCTAssertNil(buffer.get(), "buffer.get() must return nil on init")
         XCTAssertFalse(buffer.isFull, "buffer.isFull must return false on init")
         XCTAssertTrue(buffer.isEmpty, "buffer.isEmpty must return true on init")
         XCTAssertEqual(buffer.count, 0, "buffer.count must be 0 on init")
@@ -71,6 +71,7 @@ class SKRingBufferTest: XCTestCase {
         XCTAssertTrue(buffer.elements.isEmpty, "buffer.elements.isEmpty must be true after buffer.discardObjects()")
         XCTAssertTrue(buffer.isEmpty, "buffer.isEmpty must be true after buffer.discardObjects()")
         XCTAssertFalse(buffer.isFull, "buffer.isFull must be false if buffer.isEmpty is true")
+        XCTAssertNil(buffer.get(), "buffer.get() must return nil after discard")
     }
 
 
@@ -105,7 +106,7 @@ class SKRingBufferTest: XCTestCase {
 
         for expected in 0 ..< 8 {
             let yielded = buffer.get()
-            XCTAssertTrue(yielded?, "buffer.get() should yield a non-nil value")
+            XCTAssertNotNil(yielded, "buffer.get() should yield a non-nil value")
             XCTAssertEqual(expected, yielded!, "buffer.get() should yield \(expected)")
         }
 
@@ -134,9 +135,9 @@ class SKRingBufferTest: XCTestCase {
         let y = buffer.get()
         let z = buffer.get()
 
-        XCTAssertTrue(x?, "x = buffer.get() is not nil")
-        XCTAssertTrue(y?, "y = buffer.get() is not nil")
-        XCTAssertTrue(z?, "z = buffer.get() is not nil")
+        XCTAssertNotNil(x?, "x = buffer.get() is not nil")
+        XCTAssertNotNil(y?, "y = buffer.get() is not nil")
+        XCTAssertNotNil(z?, "z = buffer.get() is not nil")
 
         XCTAssertTrue(buffer.canRewind, "buffer.canRewind is true")
         XCTAssertTrue(buffer.rewind(), "buffer.rewind() succeeds")
@@ -201,7 +202,7 @@ class SKRingBufferTest: XCTestCase {
 
         XCTAssertEqual(putTotal, getTotal, "The number of items added and read should be equal")
         XCTAssertTrue(buffer.isEmpty, "buffer.isEmpty should be true after reading all elements in the queue")
-        XCTAssertFalse(<-buffer, "<-buffer should be nil after reading all elements in the queue")
+        XCTAssertNil(<-buffer, "<-buffer should be nil after reading all elements in the queue")
     }
 
 }
