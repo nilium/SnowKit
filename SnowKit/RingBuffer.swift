@@ -208,7 +208,7 @@ class RingBuffer<T>: Sequence, FixedReadWriteQueue {
 }
 
 
-operator infix <- { associativity left }
+operator infix <- { associativity left precedence 131 }
 operator prefix <- {}
 
 
