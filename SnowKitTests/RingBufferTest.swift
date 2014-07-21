@@ -180,11 +180,15 @@ class SKRingBufferTest: XCTestCase {
 
 
     func testReadWriteQueueOperators() {
+        let putLimit = buffer.capacity
+
         XCTAssertTrue(buffer.isEmpty, "buffer.isEmpty should be true initially")
 
         var putTotal = 0
         while !buffer.isFull && buffer <- putTotal {
             ++putTotal
+
+            XCTAssertLessThanOrEqual(putTotal, putLimit, "putTotal has exceeded its possible capacity")
         }
         XCTAssertTrue(buffer.isFull, "buffer.isFull should be true after buffer<-E returns false")
         XCTAssertFalse(buffer <- putTotal, "buffer <- total should return false when buffer.isFull")
