@@ -10,6 +10,9 @@ import Foundation
 /// An enum wrapping possible key-value observers (or a lack thereof).
 enum KeyValueObserver {
 
+    public typealias Block = (String, AnyObject, NSDictionary) -> Void
+
+
     /// A standard object-based observer for a single object.
     case Object(path: String, sender: NSObject, receiver: NSObject, context: UnsafePointer<Void>)
     /// A standard object-based observer for objects in an array at the given
