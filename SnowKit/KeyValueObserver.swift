@@ -119,7 +119,7 @@ func observeKeyPath(
     let opts = NSKeyValueObservingOptions.combined(options)
     let forwarder = KeyValueObservationForwarder(block: block, queue: queue)
     object.addObserver(forwarder, forKeyPath: path, options: opts, context: nil)
-    return KeyValueObserver.Forwarder(path: path, sender: object, receiver: forwarder)
+    return KeyValueObserver.Object(path: path, sender: object, receiver: forwarder, context: nil)
 }
 
 
@@ -143,7 +143,7 @@ func observeKeyPath(
         : NSIndexSet(indexesInRange: NSRange(0 ..< array.count))
 
     array.addObserver(forwarder, toObjectsAtIndexes: indices, forKeyPath: path, options: opts, context: nil)
-    return KeyValueObserver.ArrayForwarder(path: path, array: array, indices: indicesFinal, receiver: forwarder)
+    return KeyValueObserver.ArrayObject(path: path, array: array, indices: indicesFinal, receiver: forwarder, context: nil)
 }
 
 
