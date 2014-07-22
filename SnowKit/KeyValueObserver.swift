@@ -18,11 +18,6 @@ enum KeyValueObserver {
     /// A standard object-based observer for objects in an array at the given
     /// indices.
     case ArrayObject(path: String, array: NSArray, indices: NSIndexSet, receiver: NSObject, context: UnsafePointer<Void>)
-    /// A forwarding block-based observer for a single object.
-    case Forwarder(path: String, sender: NSObject, receiver: KeyValueObservationForwarder)
-    /// A forwarding block-based observer for objects in an array at the given
-    /// indices.
-    case ArrayForwarder(path: String, array: NSArray, indices: NSIndexSet, receiver: KeyValueObservationForwarder)
     /// No defined observer. Disconnecting this is a no-op.
     case None
 
@@ -35,10 +30,6 @@ enum KeyValueObserver {
             sender.removeObserver(receiver, forKeyPath: path, context: ctx)
         case let .ArrayObject(path, array, indices, receiver, ctx):
             array.removeObserver(receiver, fromObjectsAtIndexes: indices, forKeyPath: path, context: ctx)
-        case let .Forwarder(path, sender, receiver):
-            sender.removeObserver(receiver, forKeyPath: path)
-        case let .ArrayForwarder(path, array, indices, receiver):
-            array.removeObserver(receiver, fromObjectsAtIndexes: indices, forKeyPath: path)
         case .None:
             return false
         }
