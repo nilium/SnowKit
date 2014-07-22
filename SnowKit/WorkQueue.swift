@@ -9,7 +9,7 @@ import Foundation
 
 /// Exception thrown when attempting to schedule a barrier block on a queue
 /// that does not accept barrier blocks (i.e., NSOperatonQueue).
-let QBarrierUnsupportedException = "QBarrierUnsupportedException"
+internal let QBarrierUnsupportedException = "QBarrierUnsupportedException"
 
 
 /// Enumeration for Cocoa/Dispatch work queues. Wraps dispatch queues and
@@ -20,10 +20,10 @@ let QBarrierUnsupportedException = "QBarrierUnsupportedException"
 /// A third case, the .Immediate queue, is for forcing execution of blocks
 /// onto the calling thread to be performed immediately. This is only really
 /// useful for debugging.
-enum WorkQueue {
+public enum WorkQueue {
 
     /// A closure or function that takes no arguments and returns nothing.
-    typealias Work = () -> Void
+    public typealias Work = () -> Void
 
 
     /// WorkQueue for a dispatch_queue_t
@@ -38,7 +38,7 @@ enum WorkQueue {
 
 
     /// Gets the main thread's dispatch queue.
-    static var MainDispatch: WorkQueue {
+    public static var MainDispatch: WorkQueue {
         get {
             return DispatchQueue(dispatch_get_main_queue())
         }
@@ -46,7 +46,7 @@ enum WorkQueue {
 
 
     /// Gets the main thread's NSOperationQueue.
-    static var MainOps: WorkQueue {
+    public static var MainOps: WorkQueue {
         get {
             return OperationQueue(NSOperationQueue.mainQueue())
         }
@@ -54,7 +54,7 @@ enum WorkQueue {
 
 
     /// Gets the high priority global dispatch queue.
-    static var HighPriority: WorkQueue {
+    public static var HighPriority: WorkQueue {
         get {
             let queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0)
             return DispatchQueue(queue)
@@ -63,7 +63,7 @@ enum WorkQueue {
 
 
     /// Gets the default priority global dispatch queue.
-    static var DefaultPriority: WorkQueue {
+    public static var DefaultPriority: WorkQueue {
         get {
             let queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)
             return DispatchQueue(queue)
@@ -72,7 +72,7 @@ enum WorkQueue {
 
 
     /// Gets the low priority global dispatch queue.
-    static var LowPriority: WorkQueue {
+    public static var LowPriority: WorkQueue {
         get {
             let queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_LOW, 0)
             return DispatchQueue(queue)
@@ -81,7 +81,7 @@ enum WorkQueue {
 
 
     /// Gets the background priority global dispatch queue.
-    static var Background: WorkQueue {
+    public static var Background: WorkQueue {
         get {
             let queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0)
             return DispatchQueue(queue)
@@ -91,7 +91,7 @@ enum WorkQueue {
 
     /// Attempts to get the current NSOperationQueue and return it as a
     /// WorkQueue. Returns nothing if unsuccessful.
-    var CurrentOps: WorkQueue? {
+    public var CurrentOps: WorkQueue? {
         get {
             if let queue = NSOperationQueue.currentQueue()? {
                 return OperationQueue(queue)
@@ -103,19 +103,19 @@ enum WorkQueue {
 
 
     /// Allocates a new concurrent dispatch queue with the given name.
-    static func concurrentDispatchQueue(named: String) -> WorkQueue {
+    public static func concurrentDispatchQueue(named: String) -> WorkQueue {
         return newDispatchQueue(named, attr: DISPATCH_QUEUE_CONCURRENT)
     }
 
 
     /// Allocates a new serial dispatch queue with the given name.
-    static func serialDispatchQueue(named: String) -> WorkQueue {
+    public static func serialDispatchQueue(named: String) -> WorkQueue {
         return newDispatchQueue(named, attr: DISPATCH_QUEUE_SERIAL)
     }
 
 
     /// Allocates a new dispatch queue with the given name and attributes.
-    static func newDispatchQueue(named: String, attr: dispatch_queue_attr_t) -> WorkQueue {
+    public static func newDispatchQueue(named: String, attr: dispatch_queue_attr_t) -> WorkQueue {
         let queue = named.withCString { dispatch_queue_create($0, attr) }
         return DispatchQueue(queue)
     }
@@ -123,7 +123,7 @@ enum WorkQueue {
 
     /// Schedules the given block asynchronously on the WorkQueue. This is your
     /// fire-and-forget work.
-    func async(block: Work) {
+    public func async(block: Work) {
         switch (self) {
         case .Immediate:
             block()
@@ -144,7 +144,7 @@ enum WorkQueue {
     /// are already on will potentially deadlock or worse. Where possible,
     /// avoid synchronous tasks altogether or do not schedule them on the same
     /// queue currently executing the task.
-    func sync(block: Work) {
+    public func sync(block: Work) {
         switch (self) {
         case .Immediate:
             block()
@@ -171,7 +171,7 @@ enum WorkQueue {
     /// Immediate queues continue to execute blocks
     /// immediately on the calling thread (i.e., same as just calling the block
     /// yourself).
-    func asyncWithBarrier(block: Work) {
+    public func asyncWithBarrier(block: Work) {
         switch (self) {
         case .Immediate:
             // Would throw an exception for this as well, but this is already
@@ -204,7 +204,7 @@ enum WorkQueue {
     ///
     /// Immediate queues continue to execute blocks immediately on the calling
     /// thread (i.e., same as just calling the block yourself).
-    func syncWithBarrier(block: Work) {
+    public func syncWithBarrier(block: Work) {
         switch (self) {
         case .Immediate:
             block()
@@ -225,7 +225,7 @@ enum WorkQueue {
     /// Runs the given block on the main thread asynchronously. This is
     /// short-hand for requesting the main dispatch thread and calling its
     /// async method.
-    static func runOnMain(block: Work) {
+    public static func runOnMain(block: Work) {
         MainDispatch.async(block)
     }
 

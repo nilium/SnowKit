@@ -8,7 +8,7 @@ import Foundation
 
 
 /// NSNotificationCenter observer wrapper.
-enum NotificationObserver {
+public enum NotificationObserver {
 
     /// Wraps a block-based observer and center.
     case Block(ref: AnyObject, center: NSNotificationCenter)
@@ -19,7 +19,7 @@ enum NotificationObserver {
     case None
 
 
-    func disconnect() {
+    internal func disconnect() {
         switch self {
         case let .Block(ref, center):
             center.removeObserver(ref)
@@ -37,7 +37,7 @@ enum NotificationObserver {
 /// sender to watch for, and the center used may also be provided. By default,
 /// no queue is provided, the sender is AnyObject, and the default notification
 /// center is used.
-func observeNotification(
+public func observeNotification(
     sentBy sender: AnyObject? = nil,
     onQueue queue: NSOperationQueue? = nil,
     center: NSNotificationCenter = NSNotificationCenter.defaultCenter(),
@@ -51,14 +51,14 @@ func observeNotification(
 
 
 /// Disconnects the given observer, if possible, and sets it to .None.
-func disconnectObserver(inout observer: NotificationObserver) {
+public func disconnectObserver(inout observer: NotificationObserver) {
     observer.disconnect()
     observer = .None
 }
 
 
 /// Disconnects the given observer.
-func disconnectObserver(var observer: NotificationObserver) {
+public func disconnectObserver(var observer: NotificationObserver) {
     observer.disconnect()
 }
 
@@ -67,7 +67,7 @@ func disconnectObserver(var observer: NotificationObserver) {
 /// dictionary through a notification center. By default, the notification
 /// sender and info dictionary are nil and the default notification center
 /// is used.
-func notify(
+public func notify(
     name: String,
     from sender: AnyObject? = nil,
     info: [NSObject: AnyObject]? = nil,

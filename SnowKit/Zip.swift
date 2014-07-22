@@ -12,7 +12,7 @@ import Foundation
 /// result is [(String, Int)]. The resulting array is only as long as the
 /// smallest input sequence (so if lhs is 50 elements and rhs is 25 elements,
 /// the result only contains a zipped array of the first 25 elements of each).
-func zip<
+public func zip<
     Sx: Sequence, Sy: Sequence, T, U
     where T == Sx.GeneratorType.Element, U == Sy.GeneratorType.Element
     >(lhs: Sx, rhs: Sy) -> [(T, U)]

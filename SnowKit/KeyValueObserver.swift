@@ -8,7 +8,7 @@ import Foundation
 
 
 /// An enum wrapping possible key-value observers (or a lack thereof).
-enum KeyValueObserver {
+public enum KeyValueObserver {
 
     public typealias Block = (String, AnyObject, NSDictionary) -> Void
 
@@ -24,7 +24,7 @@ enum KeyValueObserver {
 
     /// Disconnects this observer. Returns true if the observer is defined,
     /// otherwise false (in the case of .None).
-    func disconnect() -> Bool {
+    internal func disconnect() -> Bool {
         switch (self) {
         case let .Object(path, sender, receiver, ctx):
             sender.removeObserver(receiver, forKeyPath: path, context: ctx)
@@ -42,7 +42,7 @@ enum KeyValueObserver {
 
 /// Extension for NSKeyValueObservingOptions to simplify the use of its flags
 /// in Swift.
-extension NSKeyValueObservingOptions {
+internal extension NSKeyValueObservingOptions {
 
     /// Returns the given flags combined by bitwise-or.
     static func combined(opts: [NSKeyValueObservingOptions]) -> NSKeyValueObservingOptions {
@@ -56,7 +56,7 @@ extension NSKeyValueObservingOptions {
 /// observation updates and forwards them to a block. If provided with a queue
 /// on initialization, the update's response is scheduled on that queue rather
 /// than being executed on the calling thread.
-class KeyValueObservationForwarder: NSObject {
+internal class KeyValueObservationForwarder: NSObject {
 
     let block: KeyValueObserver.Block
     let queue: NSOperationQueue?
@@ -90,7 +90,7 @@ class KeyValueObservationForwarder: NSObject {
 /// Observes the given key path on an object and returns the resulting
 /// observer. Updates to the observed key path are forwarded to the provided
 /// closure.
-func observeKeyPath(
+public func observeKeyPath(
     path: String,
     ofObject object: NSObject,
     onQueue queue: NSOperationQueue? = nil,
@@ -109,7 +109,7 @@ func observeKeyPath(
 /// observer. Updates to the observed key path are forwarded to the provided
 /// closure. If no indices are specified, all objects in the array are observed,
 /// otherwise only those at the indices marked by the index set are observed.
-func observeKeyPath(
+public func observeKeyPath(
     path: String,
     ofObjectsInArray array: NSArray,
     atIndices indices: NSIndexSet? = nil,
@@ -130,14 +130,14 @@ func observeKeyPath(
 
 
 /// Disconnects the given key-value observer and sets it to .None.
-func disconnectObserver(inout observer: KeyValueObserver) {
+public func disconnectObserver(inout observer: KeyValueObserver) {
     observer.disconnect()
     observer = .None
 }
 
 
 /// Disconnects the given key-value observer.
-func disconnectObserver(var observer: KeyValueObserver) {
+public func disconnectObserver(var observer: KeyValueObserver) {
     observer.disconnect()
 }
 
