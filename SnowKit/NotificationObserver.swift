@@ -38,8 +38,8 @@ enum NotificationObserver {
 /// no queue is provided, the sender is AnyObject, and the default notification
 /// center is used.
 func observeNotification(
-    onQueue queue: NSOperationQueue? = nil,
     sentBy sender: AnyObject? = nil,
+    onQueue queue: NSOperationQueue? = nil,
     center: NSNotificationCenter = NSNotificationCenter.defaultCenter(),
     named name: String,
     block: (NSNotification!) -> Void
