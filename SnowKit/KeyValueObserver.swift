@@ -58,9 +58,6 @@ extension NSKeyValueObservingOptions {
 /// than being executed on the calling thread.
 class KeyValueObservationForwarder: NSObject {
 
-    typealias KeyValueObserverBlock = (String, AnyObject, NSDictionary) -> Void
-
-
     let block: KeyValueObserver.Block
     let queue: NSOperationQueue?
 
