@@ -49,12 +49,6 @@ extension NSKeyValueObservingOptions {
         return self(opts.reduce(0) { $0 | $1.toRaw() })
     }
 
-
-    /// Returns the given flags combined by bitwise-or.
-    static func combined(opts: NSKeyValueObservingOptions...) -> NSKeyValueObservingOptions {
-        return combined(opts)
-    }
-
 }
 
 
