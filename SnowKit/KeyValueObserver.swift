@@ -76,11 +76,11 @@ class KeyValueObservationForwarder: NSObject {
     typealias KeyValueObserverBlock = (String, AnyObject, NSDictionary) -> Void
 
 
-    let block: KeyValueObserverBlock
+    let block: KeyValueObserver.Block
     let queue: NSOperationQueue?
 
 
-    init(block: KeyValueObserverBlock, queue: NSOperationQueue? = nil) {
+    init(block: KeyValueObserver.Block, queue: NSOperationQueue? = nil) {
         self.block = block
         self.queue = queue
     }
@@ -113,7 +113,7 @@ func observeKeyPath(
     ofObject object: NSObject,
     onQueue queue: NSOperationQueue? = nil,
     #options: [NSKeyValueObservingOptions],
-    block: KeyValueObservationForwarder.KeyValueObserverBlock
+    block: KeyValueObserver.Block
     ) -> KeyValueObserver
 {
     let opts = NSKeyValueObservingOptions.combined(options)
@@ -133,7 +133,7 @@ func observeKeyPath(
     atIndices indices: NSIndexSet? = nil,
     onQueue queue: NSOperationQueue? = nil,
     #options: [NSKeyValueObservingOptions],
-    block: KeyValueObservationForwarder.KeyValueObserverBlock
+    block: KeyValueObserver.Block
     ) -> KeyValueObserver
 {
     let forwarder = KeyValueObservationForwarder(block: block, queue: queue)
