@@ -68,7 +68,6 @@ class SKRingBufferTest: XCTestCase {
 
         buffer.discardObjects()
 
-        XCTAssertTrue(buffer.elements.isEmpty, "buffer.elements.isEmpty must be true after buffer.discardObjects()")
         XCTAssertTrue(buffer.isEmpty, "buffer.isEmpty must be true after buffer.discardObjects()")
         XCTAssertFalse(buffer.isFull, "buffer.isFull must be false if buffer.isEmpty is true")
         XCTAssertNil(buffer.get(), "buffer.get() must return nil after discard")
