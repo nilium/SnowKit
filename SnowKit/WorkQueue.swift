@@ -20,25 +20,25 @@ internal let QBarrierUnsupportedException = "QBarrierUnsupportedException"
 /// A third case, the .Immediate queue, is for forcing execution of blocks
 /// onto the calling thread to be performed immediately. This is only really
 /// useful for debugging.
-public enum WorkQueue {
+public enum QWorkQueue {
 
     /// A closure or function that takes no arguments and returns nothing.
     public typealias Work = () -> Void
 
 
-    /// WorkQueue for a dispatch_queue_t
+    /// QWorkQueue for a dispatch_queue_t
     case DispatchQueue(dispatch_queue_t)
 
-    /// WorkQueue for an NSOperationQueue
+    /// QWorkQueue for an NSOperationQueue
     case OperationQueue(NSOperationQueue)
 
-    /// WorkQueue for the same thread of execution (just calls the block given
+    /// QWorkQueue for the same thread of execution (just calls the block given
     /// for both sync and async).
     case Immediate
 
 
     /// Gets the main thread's dispatch queue.
-    public static var MainDispatch: WorkQueue {
+    public static var MainDispatch: QWorkQueue {
         get {
             return DispatchQueue(dispatch_get_main_queue())
         }
@@ -46,7 +46,7 @@ public enum WorkQueue {
 
 
     /// Gets the main thread's NSOperationQueue.
-    public static var MainOps: WorkQueue {
+    public static var MainOps: QWorkQueue {
         get {
             return OperationQueue(NSOperationQueue.mainQueue())
         }
@@ -54,7 +54,7 @@ public enum WorkQueue {
 
 
     /// Gets the high priority global dispatch queue.
-    public static var HighPriority: WorkQueue {
+    public static var HighPriority: QWorkQueue {
         get {
             let queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0)
             return DispatchQueue(queue)
@@ -63,7 +63,7 @@ public enum WorkQueue {
 
 
     /// Gets the default priority global dispatch queue.
-    public static var DefaultPriority: WorkQueue {
+    public static var DefaultPriority: QWorkQueue {
         get {
             let queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)
             return DispatchQueue(queue)
@@ -72,7 +72,7 @@ public enum WorkQueue {
 
 
     /// Gets the low priority global dispatch queue.
-    public static var LowPriority: WorkQueue {
+    public static var LowPriority: QWorkQueue {
         get {
             let queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_LOW, 0)
             return DispatchQueue(queue)
@@ -81,7 +81,7 @@ public enum WorkQueue {
 
 
     /// Gets the background priority global dispatch queue.
-    public static var Background: WorkQueue {
+    public static var Background: QWorkQueue {
         get {
             let queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0)
             return DispatchQueue(queue)
@@ -90,8 +90,8 @@ public enum WorkQueue {
 
 
     /// Attempts to get the current NSOperationQueue and return it as a
-    /// WorkQueue. Returns nothing if unsuccessful.
-    public var CurrentOps: WorkQueue? {
+    /// QWorkQueue. Returns nothing if unsuccessful.
+    public var CurrentOps: QWorkQueue? {
         get {
             if let queue = NSOperationQueue.currentQueue()? {
                 return OperationQueue(queue)
@@ -103,25 +103,25 @@ public enum WorkQueue {
 
 
     /// Allocates a new concurrent dispatch queue with the given name.
-    public static func concurrentDispatchQueue(named: String) -> WorkQueue {
+    public static func concurrentDispatchQueue(named: String) -> QWorkQueue {
         return newDispatchQueue(named, attr: DISPATCH_QUEUE_CONCURRENT)
     }
 
 
     /// Allocates a new serial dispatch queue with the given name.
-    public static func serialDispatchQueue(named: String) -> WorkQueue {
+    public static func serialDispatchQueue(named: String) -> QWorkQueue {
         return newDispatchQueue(named, attr: DISPATCH_QUEUE_SERIAL)
     }
 
 
     /// Allocates a new dispatch queue with the given name and attributes.
-    public static func newDispatchQueue(named: String, attr: dispatch_queue_attr_t) -> WorkQueue {
+    public static func newDispatchQueue(named: String, attr: dispatch_queue_attr_t) -> QWorkQueue {
         let queue = named.withCString { dispatch_queue_create($0, attr) }
         return DispatchQueue(queue)
     }
 
 
-    /// Schedules the given block asynchronously on the WorkQueue. This is your
+    /// Schedules the given block asynchronously on the QWorkQueue. This is your
     /// fire-and-forget work.
     public func async(block: Work) {
         switch (self) {
@@ -137,7 +137,7 @@ public enum WorkQueue {
     }
 
 
-    /// Schedules the given block on the WorkQueue and attempts to wait until
+    /// Schedules the given block on the QWorkQueue and attempts to wait until
     /// the block has run and finished.
     ///
     /// Be warned that attempting to run a synchronous task on a queue that you

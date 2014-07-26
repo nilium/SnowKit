@@ -8,7 +8,7 @@ import Foundation
 
 
 /// NSNotificationCenter observer wrapper.
-public enum NotificationObserver {
+public enum QNotificationObserver {
 
     /// Wraps a block-based observer and center.
     case Block(ref: AnyObject, center: NSNotificationCenter)
@@ -43,22 +43,22 @@ public func observeNotification(
     center: NSNotificationCenter = NSNotificationCenter.defaultCenter(),
     named name: String,
     block: (NSNotification!) -> Void
-    ) -> NotificationObserver
+    ) -> QNotificationObserver
 {
     let ref = center.addObserverForName(name, object: sender, queue: queue, usingBlock: block)
-    return NotificationObserver.Block(ref: ref, center: center)
+    return QNotificationObserver.Block(ref: ref, center: center)
 }
 
 
 /// Disconnects the given observer, if possible, and sets it to .None.
-public func disconnectObserver(inout observer: NotificationObserver) {
+public func disconnectObserver(inout observer: QNotificationObserver) {
     observer.disconnect()
     observer = .None
 }
 
 
 /// Disconnects the given observer.
-public func disconnectObserver(var observer: NotificationObserver) {
+public func disconnectObserver(var observer: QNotificationObserver) {
     observer.disconnect()
 }
 

@@ -11,7 +11,7 @@ import Foundation
 /// capacity. Must implement a put() that returns whether it succeeds. A put()
 /// should only succeed if isFull is false (otherwise items in the queue must
 /// be discarded somehow).
-public protocol FixedWriteQueue {
+public protocol QFixedWriteQueue {
     typealias Element
     func put(element: Element) -> Bool
     var isFull: Bool { get }
@@ -21,20 +21,20 @@ public protocol FixedWriteQueue {
 /// Protocol to describe a read-able queue (or queue-like) that has a fixed
 /// capacity. Must implement a get() that returns items in the queue or nil if
 /// the isEmpty property returns true.
-public protocol FixedReadQueue {
+public protocol QFixedReadQueue {
     typealias Element
     func get() -> Element?
     var isEmpty: Bool { get }
 }
 
 
-/// Combined FixedWriteQueue and FixedReadQueue protocol.
-public protocol FixedReadWriteQueue: FixedWriteQueue, FixedReadQueue {}
+/// Combined QFixedWriteQueue and QFixedReadQueue protocol.
+public protocol QFixedReadWriteQueue: QFixedWriteQueue, QFixedReadQueue {}
 
 
 /// A basic ring buffer of objects of type T with independent read/write heads.
-/// Conforms to FixedReadWriteQueue.
-public class RingBuffer<T>: Sequence, FixedReadWriteQueue {
+/// Conforms to QFixedReadWriteQueue.
+public class QRingBuffer<T>: Sequence, QFixedReadWriteQueue {
 
     public typealias Element = T
     public typealias GeneratorType = GeneratorOf<Element>
@@ -47,16 +47,16 @@ public class RingBuffer<T>: Sequence, FixedReadWriteQueue {
     private var elements: [Element]
 
 
-    /// Default initializer -- inits the RingBuffer with a capacity of 256.
+    /// Default initializer -- inits the QRingBuffer with a capacity of 256.
     public convenience init() {
         self.init(capacity: 1024)
     }
 
 
-    /// Initializes the RingBuffer with the given capacity. Does not initialize
-    /// the contents of the RingBuffer with any default value.
+    /// Initializes the QRingBuffer with the given capacity. Does not initialize
+    /// the contents of the QRingBuffer with any default value.
     ///
-    /// The maximum capacity of a RingBuffer is currently Int.max/2.
+    /// The maximum capacity of a QRingBuffer is currently Int.max/2.
     /// Capacities < 0 are an error.
     public init(capacity cap: Int) {
         assert(cap > 0, "Capacity may not be <= 0")
@@ -68,10 +68,10 @@ public class RingBuffer<T>: Sequence, FixedReadWriteQueue {
     }
 
 
-    /// Initializes the RingBuffer with the given capacity and fills the buffer
+    /// Initializes the QRingBuffer with the given capacity and fills the buffer
     /// with initValue as a default.
     ///
-    /// The maximum capacity of a RingBuffer is currently Int.max/2.
+    /// The maximum capacity of a QRingBuffer is currently Int.max/2.
     /// Capacities < 0 are an error.
     public init(capacity cap: Int, initValue: Element) {
         assert(cap > 0, "Capacity may not be <= 0")
@@ -82,14 +82,14 @@ public class RingBuffer<T>: Sequence, FixedReadWriteQueue {
     }
 
 
-    /// Puts an object in the RingBuffer, if there's space available. If the
+    /// Puts an object in the QRingBuffer, if there's space available. If the
     /// buffer is maxed out (i.e., the buffer's read pointer needs to be
     /// advanced), then this method will return false. Otherwise, if the object
     /// is placed in the buffer, it returns true.
     public func put(item: Element) -> Bool {
         assert(
             readPointer <= writePointer,
-            "Invalid RingBuffer state: readPointer > writePointer"
+            "Invalid QRingBuffer state: readPointer > writePointer"
         )
 
         let delta = writePointer - readPointer
@@ -101,7 +101,7 @@ public class RingBuffer<T>: Sequence, FixedReadWriteQueue {
 
             assert(
                 writePointer < Int.max,
-                "Cannot grow the RingBuffer any further or reset the access pointers."
+                "Cannot grow the QRingBuffer any further or reset the access pointers."
             )
         } else if delta == capacity {
             // Write pointer would overwrite unread objects.
@@ -121,7 +121,7 @@ public class RingBuffer<T>: Sequence, FixedReadWriteQueue {
     }
 
 
-    /// Discards any data currently in the RingBuffer and resets both the read
+    /// Discards any data currently in the QRingBuffer and resets both the read
     /// and write pointers for the object.
     public func discardObjects() {
         writePointer = 0
@@ -130,7 +130,7 @@ public class RingBuffer<T>: Sequence, FixedReadWriteQueue {
     }
 
 
-    /// Reads an object from the RingBuffer, if there's one available. Returns
+    /// Reads an object from the QRingBuffer, if there's one available. Returns
     /// nil if no object is in the buffer.
     public func get() -> Element? {
         let next = peek()
@@ -141,12 +141,12 @@ public class RingBuffer<T>: Sequence, FixedReadWriteQueue {
     }
 
 
-    /// Gets the next object in the RingBuffer without advancing the read
+    /// Gets the next object in the QRingBuffer without advancing the read
     /// pointer.
     public func peek() -> Element? {
         assert(
             readPointer <= writePointer,
-            "Invalid RingBuffer state: readPointer > writePointer"
+            "Invalid QRingBuffer state: readPointer > writePointer"
         )
 
         if readPointer == writePointer {
@@ -181,7 +181,7 @@ public class RingBuffer<T>: Sequence, FixedReadWriteQueue {
     }
 
 
-    /// Gets the number of unread objects currently in the RingBuffer.
+    /// Gets the number of unread objects currently in the QRingBuffer.
     public var count: Int {
         return writePointer - readPointer
     }
@@ -200,7 +200,7 @@ public class RingBuffer<T>: Sequence, FixedReadWriteQueue {
 
 
     /// Returns a Generator that yields all objects available in the buffer.
-    /// Using this Generator advances the RingBuffer's read pointer.
+    /// Using this Generator advances the QRingBuffer's read pointer.
     public func generate() -> GeneratorType {
         return GeneratorType() { self.get() }
     }
@@ -212,14 +212,14 @@ public operator infix <- { associativity left precedence 131 }
 public operator prefix <- {}
 
 
-/// Gets a value from the RingBuffer and returns it, if there is one.
-@prefix public func <- <Q: FixedReadQueue>(queue: Q) -> Q.Element? {
+/// Gets a value from the QRingBuffer and returns it, if there is one.
+@prefix public func <- <Q: QFixedReadQueue>(queue: Q) -> Q.Element? {
     return queue.get()
 }
 
 
-/// Stores a value in the RingBuffer if there's space. Returns true if
+/// Stores a value in the QRingBuffer if there's space. Returns true if
 /// successful, otherwise false.
-@infix public func <- <Q: FixedWriteQueue>(queue: Q, value: Q.Element) -> Bool {
+@infix public func <- <Q: QFixedWriteQueue>(queue: Q, value: Q.Element) -> Bool {
     return queue.put(value)
 }

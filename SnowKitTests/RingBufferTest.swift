@@ -12,11 +12,11 @@ import SnowKit
 class SKRingBufferTest: XCTestCase {
 
     let testedCapacity = 16
-    var buffer: RingBuffer<Int> = RingBuffer()
+    var buffer: QRingBuffer<Int> = QRingBuffer()
 
 
     override func setUp() {
-        buffer = RingBuffer(capacity: testedCapacity)
+        buffer = QRingBuffer(capacity: testedCapacity)
         super.setUp()
     }
 
@@ -159,11 +159,11 @@ class SKRingBufferTest: XCTestCase {
     // Several functions to test for protocol conformance by relying on generic
     // type constraints.
     func isWriteQueue<T>(q: T) -> Bool { return false }
-    func isWriteQueue<T: FixedWriteQueue>(q: T) -> Bool { return true }
+    func isWriteQueue<T: QFixedWriteQueue>(q: T) -> Bool { return true }
     func isReadQueue<T>(q: T) -> Bool { return false }
-    func isReadQueue<T: FixedReadQueue>(q: T) -> Bool { return true }
+    func isReadQueue<T: QFixedReadQueue>(q: T) -> Bool { return true }
     func isReadWriteQueue<T>(q: T) -> Bool { return false }
-    func isReadWriteQueue<T: FixedReadWriteQueue>(q: T) -> Bool { return true }
+    func isReadWriteQueue<T: QFixedReadWriteQueue>(q: T) -> Bool { return true }
 
 
     func testReadWriteQueueCompliance() {

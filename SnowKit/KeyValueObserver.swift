@@ -8,7 +8,7 @@ import Foundation
 
 
 /// An enum wrapping possible key-value observers (or a lack thereof).
-public enum KeyValueObserver {
+public enum QKeyValueObserver {
 
     public typealias Block = (String, AnyObject, NSDictionary) -> Void
 
@@ -56,13 +56,13 @@ internal extension NSKeyValueObservingOptions {
 /// observation updates and forwards them to a block. If provided with a queue
 /// on initialization, the update's response is scheduled on that queue rather
 /// than being executed on the calling thread.
-internal class KeyValueObservationForwarder: NSObject {
+internal class QKeyValueObservationForwarder: NSObject {
 
-    let block: KeyValueObserver.Block
+    let block: QKeyValueObserver.Block
     let queue: NSOperationQueue?
 
 
-    init(block: KeyValueObserver.Block, queue: NSOperationQueue? = nil) {
+    init(block: QKeyValueObserver.Block, queue: NSOperationQueue? = nil) {
         self.block = block
         self.queue = queue
     }
@@ -95,13 +95,13 @@ public func observeKeyPath(
     ofObject object: NSObject,
     onQueue queue: NSOperationQueue? = nil,
     #options: [NSKeyValueObservingOptions],
-    block: KeyValueObserver.Block
-    ) -> KeyValueObserver
+    block: QKeyValueObserver.Block
+    ) -> QKeyValueObserver
 {
     let opts = NSKeyValueObservingOptions.combined(options)
-    let forwarder = KeyValueObservationForwarder(block: block, queue: queue)
+    let forwarder = QKeyValueObservationForwarder(block: block, queue: queue)
     object.addObserver(forwarder, forKeyPath: path, options: opts, context: nil)
-    return KeyValueObserver.Object(path: path, sender: object, receiver: forwarder, context: nil)
+    return QKeyValueObserver.Object(path: path, sender: object, receiver: forwarder, context: nil)
 }
 
 
@@ -115,29 +115,29 @@ public func observeKeyPath(
     atIndices indices: NSIndexSet? = nil,
     onQueue queue: NSOperationQueue? = nil,
     #options: [NSKeyValueObservingOptions],
-    block: KeyValueObserver.Block
-    ) -> KeyValueObserver
+    block: QKeyValueObserver.Block
+    ) -> QKeyValueObserver
 {
-    let forwarder = KeyValueObservationForwarder(block: block, queue: queue)
+    let forwarder = QKeyValueObservationForwarder(block: block, queue: queue)
     let opts = NSKeyValueObservingOptions.combined(options)
     let indicesFinal: NSIndexSet = indices
         ? indices!
         : NSIndexSet(indexesInRange: NSRange(0 ..< array.count))
 
     array.addObserver(forwarder, toObjectsAtIndexes: indices, forKeyPath: path, options: opts, context: nil)
-    return KeyValueObserver.ArrayObject(path: path, array: array, indices: indicesFinal, receiver: forwarder, context: nil)
+    return QKeyValueObserver.ArrayObject(path: path, array: array, indices: indicesFinal, receiver: forwarder, context: nil)
 }
 
 
 /// Disconnects the given key-value observer and sets it to .None.
-public func disconnectObserver(inout observer: KeyValueObserver) {
+public func disconnectObserver(inout observer: QKeyValueObserver) {
     observer.disconnect()
     observer = .None
 }
 
 
 /// Disconnects the given key-value observer.
-public func disconnectObserver(var observer: KeyValueObserver) {
+public func disconnectObserver(var observer: QKeyValueObserver) {
     observer.disconnect()
 }
 
