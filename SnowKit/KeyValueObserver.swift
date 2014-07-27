@@ -22,9 +22,9 @@ public enum QKeyValueObserver {
     case None
 
 
-    /// Disconnects this observer. Returns true if the observer is defined,
+    /// Disconnects this observer. Returns true if the observer was defined,
     /// otherwise false (in the case of .None).
-    internal func disconnect() -> Bool {
+    mutating public func disconnect() -> Bool {
         switch (self) {
         case let .Object(path, sender, receiver, ctx):
             sender.removeObserver(receiver, forKeyPath: path, context: ctx)
@@ -33,6 +33,8 @@ public enum QKeyValueObserver {
         case .None:
             return false
         }
+
+        self = .None
 
         return true
     }
@@ -132,12 +134,4 @@ public func observeKeyPath(
 /// Disconnects the given key-value observer and sets it to .None.
 public func disconnectObserver(inout observer: QKeyValueObserver) {
     observer.disconnect()
-    observer = .None
 }
-
-
-/// Disconnects the given key-value observer.
-public func disconnectObserver(var observer: QKeyValueObserver) {
-    observer.disconnect()
-}
-

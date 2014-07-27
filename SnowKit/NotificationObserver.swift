@@ -19,15 +19,21 @@ public enum QNotificationObserver {
     case None
 
 
-    internal func disconnect() {
+    /// Disconnects the notification observer if defined. Returns true if
+    /// defined, otherwise false.
+    mutating public func disconnect() -> Bool {
         switch self {
         case let .Block(ref, center):
             center.removeObserver(ref)
         case let .Object(obj, name, sender, center):
             center.removeObserver(obj, name: name, object: sender)
         case .None:
-            return
+            return false
         }
+
+        self = .None
+
+        return true
     }
 
 }
@@ -52,13 +58,6 @@ public func observeNotification(
 
 /// Disconnects the given observer, if possible, and sets it to .None.
 public func disconnectObserver(inout observer: QNotificationObserver) {
-    observer.disconnect()
-    observer = .None
-}
-
-
-/// Disconnects the given observer.
-public func disconnectObserver(var observer: QNotificationObserver) {
     observer.disconnect()
 }
 
