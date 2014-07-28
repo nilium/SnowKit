@@ -92,16 +92,16 @@ internal class QKeyValueObservationForwarder: NSObject {
 /// Observes the given key path on an object and returns the resulting
 /// observer. Updates to the observed key path are forwarded to the provided
 /// closure.
-public func observeKeyPath(
+public func observeKeyPath<T: NSObject>(
     path: String,
-    ofObject object: NSObject,
+    ofObject object: T,
     onQueue queue: NSOperationQueue? = nil,
     #options: [NSKeyValueObservingOptions],
-    block: QKeyValueObserver.Block
+    block: (String, T, NSDictionary) -> Void
     ) -> QKeyValueObserver
 {
     let opts = NSKeyValueObservingOptions.combined(options)
-    let forwarder = QKeyValueObservationForwarder(block: block, queue: queue)
+    let forwarder = QKeyValueObservationForwarder(block: { block($0, $1 as T, $2) }, queue: queue)
     object.addObserver(forwarder, forKeyPath: path, options: opts, context: nil)
     return QKeyValueObserver.Object(path: path, sender: object, receiver: forwarder, context: nil)
 }
