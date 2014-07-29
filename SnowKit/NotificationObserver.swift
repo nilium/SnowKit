@@ -67,12 +67,6 @@ public func observeNotification(
 }
 
 
-/// Disconnects the given observer, if possible, and sets it to .None.
-public func disconnectObserver(inout observer: QNotificationObserver) {
-    observer.disconnect()
-}
-
-
 /// Shorthand for posting a notification with a given name, sender, and info
 /// dictionary through a notification center. By default, the notification
 /// sender and info dictionary are nil and the default notification center
