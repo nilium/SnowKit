@@ -140,9 +140,3 @@ public func observeKeyPath(
     array.addObserver(forwarder, toObjectsAtIndexes: indices, forKeyPath: path, options: opts, context: nil)
     return QKeyValueObserver.ArrayObject(path: path, array: array, indices: indicesFinal, receiver: forwarder, context: nil)
 }
-
-
-/// Disconnects the given key-value observer and sets it to .None.
-public func disconnectObserver(inout observer: QKeyValueObserver) {
-    observer.disconnect()
-}
