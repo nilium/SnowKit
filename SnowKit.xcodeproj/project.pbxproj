@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		1CB144A1198836D80012147C /* Observer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CB144A0198836D80012147C /* Observer.swift */; };
 		1CFB1861197A25B1000EC612 /* SnowKit.h in Headers */ = {isa = PBXBuildFile; fileRef = 1CFB1860197A25B1000EC612 /* SnowKit.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		1CFB1867197A25B1000EC612 /* SnowKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1CFB185B197A25B1000EC612 /* SnowKit.framework */; };
 		1CFB187A197A25D5000EC612 /* NotificationObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CFB1877197A25D5000EC612 /* NotificationObserver.swift */; };
@@ -40,6 +41,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		1CB144A0198836D80012147C /* Observer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Observer.swift; sourceTree = "<group>"; };
 		1CFB185B197A25B1000EC612 /* SnowKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = SnowKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		1CFB185F197A25B1000EC612 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		1CFB1860197A25B1000EC612 /* SnowKit.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SnowKit.h; sourceTree = "<group>"; };
@@ -102,6 +104,7 @@
 				1CFB1879197A25D5000EC612 /* KeyValueObserver.swift */,
 				1CFB1891197BCB94000EC612 /* Locking.swift */,
 				1CFB1877197A25D5000EC612 /* NotificationObserver.swift */,
+				1CB144A0198836D80012147C /* Observer.swift */,
 				1CFB187F197A2FB3000EC612 /* Optionals.swift */,
 				1CFB188D197BB6D9000EC612 /* RingBuffer.swift */,
 				1CFB1878197A25D5000EC612 /* WorkQueue.swift */,
@@ -255,6 +258,7 @@
 				1CFB187E197A25E1000EC612 /* Zip.swift in Sources */,
 				1CFB188E197BB6D9000EC612 /* RingBuffer.swift in Sources */,
 				1CFB187A197A25D5000EC612 /* NotificationObserver.swift in Sources */,
+				1CB144A1198836D80012147C /* Observer.swift in Sources */,
 				1CFB1892197BCB94000EC612 /* Locking.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
