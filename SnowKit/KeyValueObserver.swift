@@ -8,7 +8,7 @@ import Foundation
 
 
 /// An enum wrapping possible key-value observers (or a lack thereof).
-public enum QKeyValueObserver {
+public enum QKeyValueObserver: QObserver {
 
     public typealias Block = (String, AnyObject, NSDictionary) -> Void
 
@@ -37,6 +37,17 @@ public enum QKeyValueObserver {
         self = .None
 
         return true
+    }
+
+
+    public var isConnected: Bool {
+        get {
+            // For some reason, `return self != .None` doesn't work.
+            switch self {
+            case .None: return false
+            default: return true
+            }
+        }
     }
 
 }
