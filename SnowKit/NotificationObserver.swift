@@ -8,7 +8,7 @@ import Foundation
 
 
 /// NSNotificationCenter observer wrapper.
-public enum QNotificationObserver {
+public enum QNotificationObserver: QObserver {
 
     /// Wraps a block-based observer and center.
     case Block(ref: AnyObject, center: NSNotificationCenter)
@@ -34,6 +34,17 @@ public enum QNotificationObserver {
         self = .None
 
         return true
+    }
+
+
+    public var isConnected: Bool {
+        get {
+            // For some reason, `return self != .None` doesn't work.
+            switch self {
+            case .None: return false
+            default: return true
+            }
+        }
     }
 
 }
