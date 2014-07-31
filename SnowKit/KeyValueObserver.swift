@@ -122,21 +122,22 @@ public func observeKeyPath<T: NSObject>(
 /// observer. Updates to the observed key path are forwarded to the provided
 /// closure. If no indices are specified, all objects in the array are observed,
 /// otherwise only those at the indices marked by the index set are observed.
-public func observeKeyPath(
+public func observeKeyPath<T: NSObject>(
     path: String,
-    ofObjectsInArray array: NSArray,
+    ofObjectsInArray array: [T],
     atIndices indices: NSIndexSet? = nil,
     onQueue queue: NSOperationQueue? = nil,
     #options: [NSKeyValueObservingOptions],
-    block: QKeyValueObserver.Block
+    block: (String, T, NSDictionary) -> Void
     ) -> QKeyValueObserver
 {
-    let forwarder = QKeyValueObservationForwarder(block: block, queue: queue)
+    let forwarder = QKeyValueObservationForwarder(block: { block($0, $1 as T, $2) }, queue: queue)
     let opts = NSKeyValueObservingOptions.combined(options)
     let indicesFinal: NSIndexSet = indices
         ? indices!
         : NSIndexSet(indexesInRange: NSRange(0 ..< array.count))
 
-    array.addObserver(forwarder, toObjectsAtIndexes: indices, forKeyPath: path, options: opts, context: nil)
+    let bridged = array.bridgeToObjectiveC()
+    bridged.addObserver(forwarder, toObjectsAtIndexes: indices, forKeyPath: path, options: opts, context: nil)
     return QKeyValueObserver.ArrayObject(path: path, array: array, indices: indicesFinal, receiver: forwarder, context: nil)
 }
