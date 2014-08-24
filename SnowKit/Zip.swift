@@ -13,8 +13,8 @@ import Foundation
 /// smallest input sequence (so if lhs is 50 elements and rhs is 25 elements,
 /// the result only contains a zipped array of the first 25 elements of each).
 public func zip<
-    Sx: Sequence, Sy: Sequence, T, U
-    where T == Sx.GeneratorType.Element, U == Sy.GeneratorType.Element
+    Sx: SequenceType, Sy: SequenceType, T, U
+    where T == Sx.Generator.Element, U == Sy.Generator.Element
     >(lhs: Sx, rhs: Sy) -> [(T, U)]
 {
     typealias ResultItem = (T, U)
@@ -26,8 +26,8 @@ public func zip<
         let lm = lGen.next()
         let rm = rGen.next()
 
-        if lm && rm {
-            result += (lm!, rm!)
+        if lm != nil && rm != nil {
+            result.append((lm!, rm!))
         } else {
             return result
         }

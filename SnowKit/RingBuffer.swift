@@ -34,10 +34,10 @@ public protocol QFixedReadWriteQueue: QFixedWriteQueue, QFixedReadQueue {}
 
 /// A basic ring buffer of objects of type T with independent read/write heads.
 /// Conforms to QFixedReadWriteQueue.
-public class QRingBuffer<T>: Sequence, QFixedReadWriteQueue {
+public class QRingBuffer<T>: SequenceType, QFixedReadWriteQueue {
 
     public typealias Element = T
-    public typealias GeneratorType = GeneratorOf<Element>
+    public typealias Generator = GeneratorOf<Element>
 
 
     // TODO: Add access qualifiers pending their addition to Swift.
@@ -201,25 +201,8 @@ public class QRingBuffer<T>: Sequence, QFixedReadWriteQueue {
 
     /// Returns a Generator that yields all objects available in the buffer.
     /// Using this Generator advances the QRingBuffer's read pointer.
-    public func generate() -> GeneratorType {
-        return GeneratorType() { self.get() }
+    public func generate() -> Generator {
+        return Generator() { self.get() }
     }
 
-}
-
-
-public operator infix <- { associativity left precedence 131 }
-public operator prefix <- {}
-
-
-/// Gets a value from the QRingBuffer and returns it, if there is one.
-@prefix public func <- <Q: QFixedReadQueue>(queue: Q) -> Q.Element? {
-    return queue.get()
-}
-
-
-/// Stores a value in the QRingBuffer if there's space. Returns true if
-/// successful, otherwise false.
-@infix public func <- <Q: QFixedWriteQueue>(queue: Q, value: Q.Element) -> Bool {
-    return queue.put(value)
 }

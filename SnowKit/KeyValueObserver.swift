@@ -14,10 +14,10 @@ public enum QKeyValueObserver: QObserver {
 
 
     /// A standard object-based observer for a single object.
-    case Object(path: String, sender: NSObject, receiver: NSObject, context: UnsafePointer<Void>)
+    case Object(path: String, sender: NSObject, receiver: NSObject, context: UnsafeMutablePointer<Void>)
     /// A standard object-based observer for objects in an array at the given
     /// indices.
-    case ArrayObject(path: String, array: NSArray, indices: NSIndexSet, receiver: NSObject, context: UnsafePointer<Void>)
+    case ArrayObject(path: String, array: NSArray, indices: NSIndexSet, receiver: NSObject, context: UnsafeMutablePointer<Void>)
     /// No defined observer. Disconnecting this is a no-op.
     case None
 
@@ -85,7 +85,7 @@ internal class QKeyValueObservationForwarder: NSObject {
         keyPath: String!,
         ofObject object: AnyObject!,
         change: [NSObject : AnyObject]!,
-        context: UnsafePointer<Void> /* unused */
+        context: UnsafeMutablePointer<Void> /* unused */
         )
     {
         if let queue = self.queue? {
@@ -133,11 +133,9 @@ public func observeKeyPath<T: NSObject>(
 {
     let forwarder = QKeyValueObservationForwarder(block: { block($0, $1 as T, $2) }, queue: queue)
     let opts = NSKeyValueObservingOptions.combined(options)
-    let indicesFinal: NSIndexSet = indices
-        ? indices!
-        : NSIndexSet(indexesInRange: NSRange(0 ..< array.count))
+    let indicesFinal: NSIndexSet = indices ?? NSIndexSet(indexesInRange: NSRange(0 ..< array.count))
 
-    let bridged = array.bridgeToObjectiveC()
-    bridged.addObserver(forwarder, toObjectsAtIndexes: indices, forKeyPath: path, options: opts, context: nil)
+    let bridged: NSArray = array
+    bridged.addObserver(forwarder, toObjectsAtIndexes: indicesFinal, forKeyPath: path, options: opts, context: nil)
     return QKeyValueObserver.ArrayObject(path: path, array: array, indices: indicesFinal, receiver: forwarder, context: nil)
 }

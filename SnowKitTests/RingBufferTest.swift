@@ -178,30 +178,4 @@ class SKRingBufferTest: XCTestCase {
         XCTAssertTrue(isReadWriteQueue(buffer), "Queue is a fixed read-write queue")
     }
 
-
-    func testReadWriteQueueOperators() {
-        let putLimit = buffer.capacity
-
-        XCTAssertTrue(buffer.isEmpty, "buffer.isEmpty should be true initially")
-
-        var putTotal = 0
-        while !buffer.isFull && buffer <- putTotal {
-            ++putTotal
-
-            XCTAssertLessThanOrEqual(putTotal, putLimit, "putTotal has exceeded its possible capacity")
-        }
-        XCTAssertTrue(buffer.isFull, "buffer.isFull should be true after buffer<-E returns false")
-        XCTAssertFalse(buffer <- putTotal, "buffer <- total should return false when buffer.isFull")
-
-        var getTotal = 0
-        while let read = <-buffer {
-            XCTAssertEqual(read, getTotal, "<-buffer should return the values put in its buffer, in order")
-            ++getTotal
-        }
-
-        XCTAssertEqual(putTotal, getTotal, "The number of items added and read should be equal")
-        XCTAssertTrue(buffer.isEmpty, "buffer.isEmpty should be true after reading all elements in the queue")
-        XCTAssertNil(<-buffer, "<-buffer should be nil after reading all elements in the queue")
-    }
-
 }

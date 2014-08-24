@@ -12,17 +12,17 @@ public class QSpinLock: NSLocking {
     private var _lock: OSSpinLock = OS_SPINLOCK_INIT
 
     public func lock() {
-        withUnsafePointer(&_lock, OSSpinLockLock)
+        withUnsafeMutablePointer(&_lock, OSSpinLockLock)
     }
 
 
     public func unlock() {
-        withUnsafePointer(&_lock, OSSpinLockUnlock)
+        withUnsafeMutablePointer(&_lock, OSSpinLockUnlock)
     }
 
 
     public func tryLock() -> Bool {
-        return withUnsafePointer(&_lock, OSSpinLockTry)
+        return withUnsafeMutablePointer(&_lock, OSSpinLockTry)
     }
 
 }

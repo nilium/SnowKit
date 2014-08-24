@@ -14,8 +14,6 @@
 		1CFB187B197A25D5000EC612 /* WorkQueue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CFB1878197A25D5000EC612 /* WorkQueue.swift */; };
 		1CFB187C197A25D5000EC612 /* KeyValueObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CFB1879197A25D5000EC612 /* KeyValueObserver.swift */; };
 		1CFB187E197A25E1000EC612 /* Zip.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CFB187D197A25E1000EC612 /* Zip.swift */; };
-		1CFB1880197A2FB3000EC612 /* Optionals.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CFB187F197A2FB3000EC612 /* Optionals.swift */; };
-		1CFB1882197A370A000EC612 /* OptionalsTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CFB1881197A370A000EC612 /* OptionalsTest.swift */; };
 		1CFB1884197A3724000EC612 /* ZipTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CFB1883197A3724000EC612 /* ZipTest.swift */; };
 		1CFB188A197A3D73000EC612 /* LICENSE_1_0.txt in Resources */ = {isa = PBXBuildFile; fileRef = 1CFB1889197A3D73000EC612 /* LICENSE_1_0.txt */; };
 		1CFB188E197BB6D9000EC612 /* RingBuffer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CFB188D197BB6D9000EC612 /* RingBuffer.swift */; };
@@ -51,8 +49,6 @@
 		1CFB1878197A25D5000EC612 /* WorkQueue.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WorkQueue.swift; sourceTree = "<group>"; };
 		1CFB1879197A25D5000EC612 /* KeyValueObserver.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KeyValueObserver.swift; sourceTree = "<group>"; };
 		1CFB187D197A25E1000EC612 /* Zip.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Zip.swift; sourceTree = "<group>"; };
-		1CFB187F197A2FB3000EC612 /* Optionals.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Optionals.swift; sourceTree = "<group>"; };
-		1CFB1881197A370A000EC612 /* OptionalsTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OptionalsTest.swift; sourceTree = "<group>"; };
 		1CFB1883197A3724000EC612 /* ZipTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ZipTest.swift; sourceTree = "<group>"; };
 		1CFB1889197A3D73000EC612 /* LICENSE_1_0.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = LICENSE_1_0.txt; sourceTree = "<group>"; };
 		1CFB188D197BB6D9000EC612 /* RingBuffer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RingBuffer.swift; sourceTree = "<group>"; };
@@ -105,7 +101,6 @@
 				1CFB1891197BCB94000EC612 /* Locking.swift */,
 				1CFB1877197A25D5000EC612 /* NotificationObserver.swift */,
 				1CB144A0198836D80012147C /* Observer.swift */,
-				1CFB187F197A2FB3000EC612 /* Optionals.swift */,
 				1CFB188D197BB6D9000EC612 /* RingBuffer.swift */,
 				1CFB1878197A25D5000EC612 /* WorkQueue.swift */,
 				1CFB187D197A25E1000EC612 /* Zip.swift */,
@@ -126,7 +121,6 @@
 		1CFB186A197A25B1000EC612 /* SnowKitTests */ = {
 			isa = PBXGroup;
 			children = (
-				1CFB1881197A370A000EC612 /* OptionalsTest.swift */,
 				1CFB188F197BB825000EC612 /* RingBufferTest.swift */,
 				1CFB1883197A3724000EC612 /* ZipTest.swift */,
 				1CFB186B197A25B1000EC612 /* Supporting Files */,
@@ -252,7 +246,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				1CFB1880197A2FB3000EC612 /* Optionals.swift in Sources */,
 				1CFB187C197A25D5000EC612 /* KeyValueObserver.swift in Sources */,
 				1CFB187B197A25D5000EC612 /* WorkQueue.swift in Sources */,
 				1CFB187E197A25E1000EC612 /* Zip.swift in Sources */,
@@ -269,7 +262,6 @@
 			files = (
 				1CFB1890197BB825000EC612 /* RingBufferTest.swift in Sources */,
 				1CFB1884197A3724000EC612 /* ZipTest.swift in Sources */,
-				1CFB1882197A370A000EC612 /* OptionalsTest.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
